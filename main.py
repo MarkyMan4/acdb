@@ -8,6 +8,7 @@ def main():
     # populate DB with fish and bug data
     coll.collect_fish()
     coll.collect_bugs()
+    coll.collect_sea_creatures()
 
     con.close()
 

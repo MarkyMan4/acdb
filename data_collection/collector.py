@@ -159,3 +159,68 @@ class Collector:
                 """)
 
         self.con.commit()
+
+    def collect_sea_creatures(self):
+        url = self.base_url + 'sea'
+        cur = self.con.cursor()
+
+        self.truncate_tables(cur, ['sea_creature', 'sea_creature_month_availability', 'sea_creature_hour_availability'])
+
+        r = requests.get(url)
+        data = json.loads(r.text)
+
+        # each key in the JSON is the sea_creature name, pull the fields out of the JSON and insert records into tables
+        for key in data.keys():
+            sea_creature_id = data[key]['id']
+            name = data[key]['name']['name-USen'].replace("'", "''")
+            month_northern = data[key]['availability']['month-northern'].replace("'", "''")
+            month_southern = data[key]['availability']['month-southern'].replace("'", "''")
+            time = data[key]['availability']['time'].replace("'", "''")
+            is_all_day = data[key]['availability']['isAllDay']
+            is_all_year = data[key]['availability']['isAllYear']
+            price = data[key]['price']
+            catch_phrase = data[key]['catch-phrase'].replace("'", "''")
+            museum_phrase = data[key]['museum-phrase'].replace("'", "''")
+            image_uri = data[key]['image_uri']
+            icon_uri = data[key]['icon_uri']
+
+            month_availability_list = data[key]['availability']['month-array-northern']
+            hour_availability_list = data[key]['availability']['time-array']
+
+            # insert record into fish table
+            cur.execute(f"""
+                insert into sea_creature values (
+                    {sea_creature_id}, 
+                    '{name}', 
+                    '{month_northern}', 
+                    '{month_southern}', 
+                    '{time}', 
+                    {is_all_day}, 
+                    {is_all_year}, 
+                    {price},
+                    '{catch_phrase}',
+                    '{museum_phrase}',
+                    '{image_uri}',
+                    '{icon_uri}'
+                )
+            """)
+
+            # insert records into month availability table
+            for month in month_availability_list:
+                cur.execute(f"""
+                    insert into sea_creature_month_availability values (
+                        {sea_creature_id},
+                        {month}
+                    )
+                """)
+
+            # insert records into hour availability table
+            for hour in hour_availability_list:
+                cur.execute(f"""
+                    insert into sea_creature_hour_availability values (
+                        {sea_creature_id},
+                        {hour}
+                    )
+                """)
+
+        self.con.commit()

@@ -57,3 +57,28 @@ create table bug_hour_availability (
     bug_id int,
     hour int
 );
+
+create table sea_creature (
+    id int,
+    name varchar,
+    month_northern varchar,
+    month_southern varchar,
+    time varchar,
+    is_all_day boolean,
+    is_all_year boolean,
+    price int,
+    catch_phrase varchar,
+    museum_phrase varchar,
+    image_uri varchar,
+    icon_uri varchar    
+);
+
+create table sea_creature_month_availability (
+    sea_creature_id int,
+    month int
+);
+
+create table sea_creature_hour_availability (
+    sea_creature_id int,
+    hour int
+);
