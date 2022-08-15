@@ -178,6 +178,8 @@ class Collector:
             time = data[key]['availability']['time'].replace("'", "''")
             is_all_day = data[key]['availability']['isAllDay']
             is_all_year = data[key]['availability']['isAllYear']
+            speed = data[key]['speed']
+            shadow = data[key]['shadow']
             price = data[key]['price']
             catch_phrase = data[key]['catch-phrase'].replace("'", "''")
             museum_phrase = data[key]['museum-phrase'].replace("'", "''")
@@ -197,6 +199,8 @@ class Collector:
                     '{time}', 
                     {is_all_day}, 
                     {is_all_year}, 
+                    '{speed}',
+                    '{shadow}',
                     {price},
                     '{catch_phrase}',
                     '{museum_phrase}',

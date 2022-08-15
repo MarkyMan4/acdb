@@ -66,6 +66,8 @@ create table sea_creature (
     time varchar,
     is_all_day boolean,
     is_all_year boolean,
+    speed varchar,
+    shadow varchar,
     price int,
     catch_phrase varchar,
     museum_phrase varchar,
